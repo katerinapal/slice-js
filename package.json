@@ -4,8 +4,9 @@
   "private": true,
   "description": "A tool to generate a program slice of your JavaScript code",
   "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "start": "nps",
+    "start": "babel-node ./test/fixtures/module.slicerB.js",
     "test": "nps test",
     "commitmsg": "opt --in commit-msg --exec \"validate-commit-msg\"",
     "precommit": "lint-staged && opt --in pre-commit --exec \"npm start validate\""

@@ -1,18 +1,13 @@
 import fs from 'fs'
-import indent from 'indent-string'
-import {getSliceAndInfo} from './slice-code/test/helpers/utils'
+
+//backwards compatibility with ES6
+const {getSliceAndInfo} = require('./slice-code/test/helpers/utils.js')
 
 export default sliceTest
 
-async function sliceTest(filename, name, tester) {
+async function sliceTest(filename, tester) {
   const sourceCode = fs.readFileSync(filename, 'utf8')
   const {slicedCode} = await getSliceAndInfo(sourceCode, tester, filename)
-  // eslint-disable-next-line no-console
-  console.log(
-    `${relativeizePath(filename)}: ${name}\n${indent(slicedCode, 4)}`,
-  )
-}
 
-function relativeizePath(absolutePath) {
-  return absolutePath.replace(process.cwd(), '.')
+  return slicedCode
 }

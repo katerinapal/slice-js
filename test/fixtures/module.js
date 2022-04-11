@@ -3,7 +3,8 @@
  * ensure we're developing a good slice, not to have a good math
  * module :)
  */
-export {sum, subtract, multiply, divide, isGreaterThan, isFooOrBar}
+
+import {a, c} from './moduleB.js';
 
 function sum(a, b) {
   return a + b
@@ -40,3 +41,16 @@ function isFooOrBar(a) {
   /* eslint no-nested-ternary:0, no-unneeded-ternary:0 */
   return a === 'foo' ? true : a === 'bar' ? true : false
 }
+
+//let a = 5;
+let b = a;
+
+function func() {
+
+  //console.log(`b: ${b}`);
+  b++;
+}
+
+func();
+
+export {sum, subtract, multiply, divide, isGreaterThan, isFooOrBar, b, c, func}
