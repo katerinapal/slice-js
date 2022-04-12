@@ -4,7 +4,6 @@
   "private": true,
   "description": "A tool to generate a program slice of your JavaScript code",
   "main": "dist/index.js",
-  "type": "module",
   "scripts": {
     "start": "babel-node ./test/fixtures/module.slicerB.js",
     "compile-src": "babel src --out-dir dist --require babel-polyfill --presets env",
