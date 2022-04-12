@@ -5,11 +5,35 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getSliceAndInfo = exports.snapSliceCode = exports.runAllCombosTests = exports.snapSlice = exports.comboOfItems = exports.comboOfBools = undefined;
 
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _stringify = require('babel-runtime/core-js/json/stringify');
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _regenerator = require('babel-runtime/regenerator');
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
+
+var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
+
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _from = require('babel-runtime/core-js/array/from');
+
+var _from2 = _interopRequireDefault(_from);
+
 var getSliceAndInfo = function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(sourceCode, tester, actualFilepath) {
+  var _ref3 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee2(sourceCode, tester, actualFilepath) {
     var tempFilename, mod, originalResult, coverageData, slicedCode, filteredCoverage, _ref4, isSlicedCoverage100, slicedResult;
 
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -57,21 +81,21 @@ var getSliceAndInfo = function () {
 }();
 
 var slicedCoverageIs100 = function () {
-  var _ref7 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(filename, slicedCode, tester, actualFilepath) {
+  var _ref7 = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee3(filename, slicedCode, tester, actualFilepath) {
     var mod, slicedResult, is100, coverageIs100Percent;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return _regenerator2.default.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             coverageIs100Percent = function coverageIs100Percent(coverageData) {
               var cov = coverageData[filename];
-              var functions100 = Object.keys(cov.f).every(function (k) {
+              var functions100 = (0, _keys2.default)(cov.f).every(function (k) {
                 return cov.f[k] > 0;
               });
-              var statements100 = Object.keys(cov.s).every(function (k) {
+              var statements100 = (0, _keys2.default)(cov.s).every(function (k) {
                 return cov.s[k] > 0;
               });
-              var branches100 = Object.keys(cov.b).every(function (k) {
+              var branches100 = (0, _keys2.default)(cov.b).every(function (k) {
                 return cov.b[k][0] > 0 && cov.b[k][1] > 0;
               });
               return functions100 && statements100 && branches100;
@@ -146,11 +170,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } } /* istanbul ignore next */
-
-
+/* istanbul ignore next */
 var coverageVariable = '____sliceCoverage____';
 
 exports.comboOfBools = comboOfBools;
@@ -167,9 +187,9 @@ function comboOfBools(n) {
   for (var i = 0; i < Math.pow(2, n); i++) {
     var val = i.toString(2);
     var missing = len - val.length;
-    result.push(Array.from({ length: missing }).map(function () {
+    result.push((0, _from2.default)({ length: missing }).map(function () {
       return false;
-    }).concat(Array.from(val).map(function (v) {
+    }).concat((0, _from2.default)(val).map(function (v) {
       return v === '1';
     })));
   }
@@ -188,9 +208,9 @@ function comboOfItems(items) {
   items.forEach(function (item, index) {
     var firstHalf = items.slice(0, index);
     var secondHalf = items.slice(index + 1);
-    var remainingCombos = comboOfItems([].concat(_toConsumableArray(firstHalf), _toConsumableArray(secondHalf)));
+    var remainingCombos = comboOfItems([].concat((0, _toConsumableArray3.default)(firstHalf), (0, _toConsumableArray3.default)(secondHalf)));
     remainingCombos.forEach(function (combo) {
-      combos.push([item].concat(_toConsumableArray(combo)));
+      combos.push([item].concat((0, _toConsumableArray3.default)(combo)));
     });
   });
   return combos;
@@ -207,10 +227,10 @@ function snapSliceCode(sourceCode, tester, actualFilepath) {
 
   // the function returned here is what you'd
   // place in a call to Jest's `test` function
-  return _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
+  return (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
     var _ref2, originalResult, slicedCode, isSlicedCoverage100, slicedResult;
 
-    return regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -250,11 +270,11 @@ function runAllCombosTests(_ref5) {
     if (explicitArgs) {
       explicitArgs.forEach(function (args) {
         var title = methodName + '(' + args.map(function (a) {
-          return JSON.stringify(a);
+          return (0, _stringify2.default)(a);
         }).join(', ') + ')';
         test(title, snapSlice(filename, function (mod) {
           var method = useDefaultExport ? mod : mod[methodName];
-          return method.apply(undefined, _toConsumableArray(args));
+          return method.apply(undefined, (0, _toConsumableArray3.default)(args));
         }));
       });
     } else {
@@ -266,7 +286,7 @@ function runAllCombosTests(_ref5) {
       // generate the message for the test title
       var testTitle = comboOfArgs.map(function (args) {
         return methodName + '(' + args.map(function (a) {
-          return JSON.stringify(a);
+          return (0, _stringify2.default)(a);
         }).join(', ') + ')';
       }).join(' && ');
 
@@ -288,7 +308,7 @@ function runAllCombosTests(_ref5) {
         )
         /* */
         return comboOfArgs.map(function (args) {
-          return method.apply(undefined, _toConsumableArray(args));
+          return method.apply(undefined, (0, _toConsumableArray3.default)(args));
         });
       }));
     }
@@ -351,7 +371,7 @@ function instrumenter(_ref8) {
             args[_key] = arguments[_key];
           }
 
-          (_dv__2 = this.__dv__).exit.apply(_dv__2, _toConsumableArray(args));
+          (_dv__2 = this.__dv__).exit.apply(_dv__2, args);
           // expose coverage as part of the module
           var newNode = (0, _babelTemplate2.default)('module.exports.' + coverageVariable + ' = global.' + coverageVariable + ';')();
           args[0].node.body.push(newNode);

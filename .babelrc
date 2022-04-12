@@ -1,7 +1,10 @@
 {
-  "presets": [],
+  "presets": ["es2015", "stage-0"],
   "plugins": [
       "add-module-exports",
-      "transform-object-rest-spread"
+      "transform-object-rest-spread",
+      ["transform-runtime", {
+        "regenerator": true
+      }]
   ]
 }

@@ -5,7 +5,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = exports.sliceCodeAndGetInfo = undefined;
 
-var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+var _extends2 = require('babel-runtime/helpers/extends');
+
+var _extends3 = _interopRequireDefault(_extends2);
 
 var _babelCore = require('babel-core');
 
@@ -27,9 +29,9 @@ var _getSlicedCodeTransform = require('./get-sliced-code-transform');
 
 var _getSlicedCodeTransform2 = _interopRequireDefault(_getSlicedCodeTransform);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.sliceCodeAndGetInfo = sliceCodeAndGetInfo;
 exports.default = sliceCode;
@@ -66,7 +68,7 @@ function sliceCodeFromFilteredCoverage(sourceCode, filteredCoverage) {
     babelrc: false
   };
 
-  var _babel$transform = babel.transform(sourceCode, _extends({}, commonOptions, {
+  var _babel$transform = babel.transform(sourceCode, (0, _extends3.default)({}, commonOptions, {
     plugins: [(0, _getSlicedCodeTransform2.default)(filteredCoverage)]
   })),
       sliced = _babel$transform.code;
@@ -78,14 +80,14 @@ function sliceCodeFromFilteredCoverage(sourceCode, filteredCoverage) {
   // I couldn't get it working :shrug:
 
 
-  var _babel$transform2 = babel.transform(sliced, _extends({}, commonOptions, {
+  var _babel$transform2 = babel.transform(sliced, (0, _extends3.default)({}, commonOptions, {
     plugins: [_babelPluginMinifyDeadCodeElimination2.default]
   })),
       deadCodeEliminated = _babel$transform2.code;
   // console.log('deadCodeEliminated', deadCodeEliminated)
 
 
-  var _babel$transform3 = babel.transform(deadCodeEliminated, _extends({}, commonOptions, {
+  var _babel$transform3 = babel.transform(deadCodeEliminated, (0, _extends3.default)({}, commonOptions, {
     plugins: [_babelPluginCustomDeadCodeElimination2.default]
   })),
       customDeadCodeElimiated = _babel$transform3.code;

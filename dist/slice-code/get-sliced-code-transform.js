@@ -4,7 +4,19 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+var _keys = require('babel-runtime/core-js/object/keys');
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _toConsumableArray2 = require('babel-runtime/helpers/toConsumableArray');
+
+var _toConsumableArray3 = _interopRequireDefault(_toConsumableArray2);
+
+var _set = require('babel-runtime/core-js/set');
+
+var _set2 = _interopRequireDefault(_set);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // I know it's nuts, but it's a lot easier
 // to develop with ASTExplorer.net this way...
@@ -19,7 +31,7 @@ function getSliceCodeTransform(filteredCoverage) {
   var fnMap = filteredCoverage.fnMap,
       branchMap = filteredCoverage.branchMap;
 
-  var removedPaths = new Set();
+  var removedPaths = new _set2.default();
   return function sliceCodeTransform(_ref) {
     var t = _ref.types;
 
@@ -181,7 +193,7 @@ function getSliceCodeTransform(filteredCoverage) {
           var coveredCatchStatements = catchBlockPath ? getCoveredStatementsFromBlock(statementMap, catchBlockPath.node) : null;
           var coveredFinallyStatements = getCoveredStatementsFromBlock(statementMap, finallyBlockPath.node);
           if (coveredCatchStatements && !coveredCatchStatements.length) {
-            path.replaceWithMultiple([].concat(_toConsumableArray(coveredTryStatements), _toConsumableArray(coveredFinallyStatements)));
+            path.replaceWithMultiple([].concat((0, _toConsumableArray3.default)(coveredTryStatements), (0, _toConsumableArray3.default)(coveredFinallyStatements)));
           } else if (coveredTryStatements.length < tryBlockPath.node.body) {
             tryBlockPath.node.body = coveredTryStatements;
           }
@@ -524,7 +536,7 @@ function getSliceCodeTransform(filteredCoverage) {
 function getFunctionCoverageData(fnLocs, _ref2) {
   var srcLoc = _ref2.body.loc;
 
-  var fnCov = Object.keys(fnLocs).map(function (key) {
+  var fnCov = (0, _keys2.default)(fnLocs).map(function (key) {
     return fnLocs[key];
   }).find(function (_ref3) {
     var loc = _ref3.loc;
@@ -549,7 +561,7 @@ function getBranchCoverageData(branches, node) {
     'binary-expr': 'LogicalExpression',
     switch: 'SwitchStatement'
   };
-  var index = Object.keys(branches).find(function (key) {
+  var index = (0, _keys2.default)(branches).find(function (key) {
     var branch = branches[key];
     if (typeMap[branch.type] !== node.type) {
       return false;
@@ -568,7 +580,7 @@ function isBranchSideCovered(branches, side, node, parentNode) {
 }
 
 function getLogicalExpressionBranchCoverageInfo(branches, node) {
-  return Object.keys(branches).map(function (key) {
+  return (0, _keys2.default)(branches).map(function (key) {
     return branches[key];
   }).filter(function (branch) {
     return branch.type === 'binary-expr';
@@ -610,7 +622,7 @@ function getCoveredStatementsFromBlock(coveredStatements, blockNode) {
 }
 
 function isStatementCovered(coveredStatements, statement) {
-  return Object.keys(coveredStatements).find(function (s) {
+  return (0, _keys2.default)(coveredStatements).find(function (s) {
     var coveredLoc = coveredStatements[s];
     return isLocationEqual(coveredLoc, statement.loc);
   });

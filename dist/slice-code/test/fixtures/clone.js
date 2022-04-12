@@ -4,7 +4,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _typeof2 = require("babel-runtime/helpers/typeof");
+
+var _typeof3 = _interopRequireDefault(_typeof2);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = clone;
 
@@ -13,7 +17,7 @@ function clone(item) {
   if (!item) {
     return item;
   }
-  var type = typeof item === "undefined" ? "undefined" : _typeof(item);
+  var type = typeof item === "undefined" ? "undefined" : (0, _typeof3.default)(item);
   var string = Object.prototype.toString.call(item);
   var isPrimitive = type !== "object" && type !== "function";
   var result = item;
