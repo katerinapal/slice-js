@@ -1,7 +1,7 @@
 node_modules
 .nyc_output
 coverage
-dist
+dist/**/*.test.js
 .opt-in
 .opt-out
 /test/fixtures/module.slicerB.js
