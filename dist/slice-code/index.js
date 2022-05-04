@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.default = exports.sliceCodeAndGetInfo = undefined;
+exports.default = exports.sliceCodeC = exports.sliceCodeAndGetInfo = undefined;
 
 var _extends2 = require('babel-runtime/helpers/extends');
 
@@ -34,6 +34,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.sliceCodeAndGetInfo = sliceCodeAndGetInfo;
+exports.sliceCodeC = sliceCodeC;
 exports.default = sliceCode;
 
 
@@ -43,6 +44,15 @@ function sliceCode(sourceCode, coverageData) {
   // console.log('filteredCoverage', JSON.stringify(filteredCoverage, null, 2))
   // console.log('\n\n\n\nsourceCode\n', sourceCode)
   return sliceCodeFromFilteredCoverage(sourceCode, filteredCoverage);
+}
+
+function sliceCodeC(sourceCode, coverageData) {
+
+  // console.log('coverageData', JSON.stringify(coverageData, null, 2))
+  var filteredCoverage = (0, _transformCoverage.filterToRunStatementsFunctionsAndBranchesC)(coverageData);
+  // console.log('filteredCoverage', JSON.stringify(filteredCoverage, null, 2))
+  // console.log('\n\n\n\nsourceCode\n', sourceCode)
+  return sliceCodeFromFilteredCoverageC(sourceCode, filteredCoverage);
 }
 
 function sliceCodeAndGetInfo(sourceCode, coverageData) {
@@ -91,6 +101,43 @@ function sliceCodeFromFilteredCoverage(sourceCode, filteredCoverage) {
     plugins: [_babelPluginCustomDeadCodeElimination2.default]
   })),
       customDeadCodeElimiated = _babel$transform3.code;
+  // console.log('customDeadCodeElimiated', customDeadCodeElimiated)
+
+
+  return customDeadCodeElimiated;
+}
+
+function sliceCodeFromFilteredCoverageC(sourceCode, filteredCoverage) {
+  var filename = filteredCoverage.path;
+
+  var commonOptions = {
+    filename: filename,
+    babelrc: false
+  };
+
+  var _babel$transform4 = babel.transform(sourceCode, (0, _extends3.default)({}, commonOptions, {
+    plugins: [(0, _getSlicedCodeTransform2.default)(filteredCoverage)]
+  })),
+      sliced = _babel$transform4.code;
+  // console.log('sliced', sliced)
+  // TODO: perf - save time parsing by just transforming the
+  // AST from the previous run
+  // This will probably significantly speed things up.
+  // Unfortunately, when I tried the first time,
+  // I couldn't get it working :shrug:
+
+
+  var _babel$transform5 = babel.transform(sliced, (0, _extends3.default)({}, commonOptions, {
+    plugins: [_babelPluginMinifyDeadCodeElimination2.default]
+  })),
+      deadCodeEliminated = _babel$transform5.code;
+  // console.log('deadCodeEliminated', deadCodeEliminated)
+
+
+  var _babel$transform6 = babel.transform(deadCodeEliminated, (0, _extends3.default)({}, commonOptions, {
+    plugins: [_babelPluginCustomDeadCodeElimination2.default]
+  })),
+      customDeadCodeElimiated = _babel$transform6.code;
   // console.log('customDeadCodeElimiated', customDeadCodeElimiated)
 
 

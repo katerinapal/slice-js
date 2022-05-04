@@ -17,10 +17,14 @@ runAllCombosTests({
   methods: [
     {
       methodName: 'callPromise',
+
+      //[[false], [true]]
       possibleArguments: comboOfBools(1),
     },
     {
       methodName: 'callback',
+
+      //[[false], [true]]
       possibleArguments: comboOfBools(1),
     },
   ],

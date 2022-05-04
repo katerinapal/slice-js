@@ -3,6 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.sliceTestE = exports.sliceTestD = undefined;
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
 
 var _regenerator = require('babel-runtime/regenerator');
 
@@ -50,7 +55,47 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //backwards compatibility with ES6
 var _require = require('./slice-code/test/helpers/utils.js'),
-    getSliceAndInfo = _require.getSliceAndInfo;
+    getSliceAndInfo = _require.getSliceAndInfo,
+    getSliceAndInfoC = _require.getSliceAndInfoC,
+    snapSlice = _require.snapSlice;
 
 exports.default = sliceTest;
-module.exports = exports.default;
+exports.sliceTestD = sliceTestD;
+exports.sliceTestE = sliceTestE;
+
+
+function sliceTestD(filename, tester) {
+
+  return new _promise2.default(function (resolve, reject) {
+
+    //console.log(filename)
+
+    var sourceCode = _fs2.default.readFileSync(filename, 'utf8');
+    getSliceAndInfoC(sourceCode, tester, filename).then(function (res) {
+
+      console.log(res);
+      var slicedCode = res.slicedCode;
+      //console.log(slicedCode)
+
+      resolve(slicedCode);
+    });
+  });
+}
+
+function sliceTestE(filename, tester) {
+
+  return new _promise2.default(function (resolve, reject) {
+
+    //console.log(filename)
+
+    var sourceCode = _fs2.default.readFileSync(filename, 'utf8');
+    snapSlice(sourceCode, tester, filename).then(function (res) {
+
+      console.log(res);
+      var slicedCode = res.slicedCode;
+      //console.log(slicedCode)
+
+      resolve(slicedCode);
+    });
+  });
+}

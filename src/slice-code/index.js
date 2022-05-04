@@ -1,11 +1,12 @@
 import * as babel from 'babel-core'
 import deadCodeElimination from 'babel-plugin-minify-dead-code-elimination'
-import customDeadCodeElimination
-  from './babel-plugin-custom-dead-code-elimination'
+import customDeadCodeElimination from './babel-plugin-custom-dead-code-elimination'
 import transformCoverage from './transform-coverage'
 import getSliceCodeTransform from './get-sliced-code-transform'
 
-export {sliceCodeAndGetInfo, sliceCode as default}
+import {filterToRunStatementsFunctionsAndBranchesC} from './transform-coverage'
+
+export {sliceCodeAndGetInfo, sliceCodeC, sliceCode as default}
 
 function sliceCode(sourceCode, coverageData) {
   // console.log('coverageData', JSON.stringify(coverageData, null, 2))
@@ -13,6 +14,16 @@ function sliceCode(sourceCode, coverageData) {
   // console.log('filteredCoverage', JSON.stringify(filteredCoverage, null, 2))
   // console.log('\n\n\n\nsourceCode\n', sourceCode)
   return sliceCodeFromFilteredCoverage(sourceCode, filteredCoverage)
+}
+
+function sliceCodeC(sourceCode, coverageData) {
+  // console.log('coverageData', JSON.stringify(coverageData, null, 2))
+  const filteredCoverage = filterToRunStatementsFunctionsAndBranchesC(
+    coverageData,
+  )
+  // console.log('filteredCoverage', JSON.stringify(filteredCoverage, null, 2))
+  // console.log('\n\n\n\nsourceCode\n', sourceCode)
+  return sliceCodeFromFilteredCoverageC(sourceCode, filteredCoverage)
 }
 
 function sliceCodeAndGetInfo(sourceCode, coverageData) {
@@ -50,10 +61,45 @@ function sliceCodeFromFilteredCoverage(sourceCode, filteredCoverage) {
     plugins: [deadCodeElimination],
   })
   // console.log('deadCodeEliminated', deadCodeEliminated)
-  const {code: customDeadCodeElimiated} = babel.transform(deadCodeEliminated, {
+  const {code: customDeadCodeElimiated} = babel.transform(
+    deadCodeEliminated,
+    {
+      ...commonOptions,
+      plugins: [customDeadCodeElimination],
+    },
+  )
+  // console.log('customDeadCodeElimiated', customDeadCodeElimiated)
+  return customDeadCodeElimiated
+}
+
+function sliceCodeFromFilteredCoverageC(sourceCode, filteredCoverage) {
+  const {path: filename} = filteredCoverage
+  const commonOptions = {
+    filename,
+    babelrc: false,
+  }
+  const {code: sliced} = babel.transform(sourceCode, {
     ...commonOptions,
-    plugins: [customDeadCodeElimination],
+    plugins: [getSliceCodeTransform(filteredCoverage)],
   })
+  // console.log('sliced', sliced)
+  // TODO: perf - save time parsing by just transforming the
+  // AST from the previous run
+  // This will probably significantly speed things up.
+  // Unfortunately, when I tried the first time,
+  // I couldn't get it working :shrug:
+  const {code: deadCodeEliminated} = babel.transform(sliced, {
+    ...commonOptions,
+    plugins: [deadCodeElimination],
+  })
+  // console.log('deadCodeEliminated', deadCodeEliminated)
+  const {code: customDeadCodeElimiated} = babel.transform(
+    deadCodeEliminated,
+    {
+      ...commonOptions,
+      plugins: [customDeadCodeElimination],
+    },
+  )
   // console.log('customDeadCodeElimiated', customDeadCodeElimiated)
   return customDeadCodeElimiated
 }

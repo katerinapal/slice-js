@@ -37,7 +37,7 @@ let sliceRes;
 
 //oldLog(sliceRes);
 
-slice(require.resolve('./module'), 'find variable definition', ({b}) => {
+slice(require.resolve('./module'), ({b}) => {
 
   //return func()
   //return func();
