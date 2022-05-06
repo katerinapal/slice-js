@@ -9,16 +9,9 @@ const {
 } = require('./slice-code/test/helpers/utils.js')
 
 export default sliceTest
-export {sliceTestD, sliceTestE}
+export {sliceTestDEPR, sliceTestE}
 
-async function sliceTest(filename, tester) {
-  const sourceCode = fs.readFileSync(filename, 'utf8')
-  const {slicedCode} = await getSliceAndInfo(sourceCode, tester, filename)
-
-  return slicedCode
-}
-
-function sliceTestD(filename, tester) {
+function sliceTest(filename, tester) {
   return new Promise((resolve, reject) => {
     //console.log(filename)
 
@@ -30,6 +23,13 @@ function sliceTestD(filename, tester) {
       resolve(slicedCode)
     })
   })
+}
+
+async function sliceTestDEPR(filename, tester) {
+  const sourceCode = fs.readFileSync(filename, 'utf8')
+  const {slicedCode} = await getSliceAndInfo(sourceCode, tester, filename)
+
+  return slicedCode
 }
 
 function sliceTestE(filename, tester) {

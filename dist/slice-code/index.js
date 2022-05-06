@@ -47,7 +47,6 @@ function sliceCode(sourceCode, coverageData) {
 }
 
 function sliceCodeC(sourceCode, coverageData) {
-
   // console.log('coverageData', JSON.stringify(coverageData, null, 2))
   var filteredCoverage = (0, _transformCoverage.filterToRunStatementsFunctionsAndBranchesC)(coverageData);
   // console.log('filteredCoverage', JSON.stringify(filteredCoverage, null, 2))

@@ -187,14 +187,12 @@ exports.getSliceAndInfoC = getSliceAndInfoC;
 
 
 function comboOfBools(n) {
-
   //2^1-1 = 1 -> 1 -> 1
   var len = (Math.pow(2, n) - 1).toString(2).length;
   var result = [];
 
   //0-1
   for (var i = 0; i < Math.pow(2, n); i++) {
-
     //0-1
     var val = i.toString(2);
     console.log('val: ' + val);
@@ -203,7 +201,6 @@ function comboOfBools(n) {
     var missing = len - val.length;
 
     result.push(
-
     //[]
     (0, _from2.default)({ length: missing })
 
@@ -214,12 +211,10 @@ function comboOfBools(n) {
 
     //[[false]], [[false], [true]]
     .concat(
-
     //[0], [1]
-    (0, _from2.default)(val).
-
+    (0, _from2.default)(val)
     //[[false]], [[true]]
-    map(function (v) {
+    .map(function (v) {
       return v === '1';
     })));
   }
@@ -280,7 +275,7 @@ function snapSliceCode(sourceCode, tester, actualFilepath) {
             slicedResult = _ref2.slicedResult;
 
 
-            console.log('slice');
+            console.log('sliced code');
             console.log(slicedCode);
             expect(slicedCode).toMatchSnapshot();
             expect(isSlicedCoverage100).toBe(true, 'coverage should be 100%');
@@ -296,34 +291,30 @@ function snapSliceCode(sourceCode, tester, actualFilepath) {
 }
 
 function getSliceAndInfoC(sourceCode, tester, actualFilepath) {
-
-  console.log('getSliceAndInfoC');
+  //console.log(`getSliceAndInfoC`)
 
   var tempFilename = './temp-sliced.' + (0, _lodash.random)(1, 9999999999999) + '.js';
   var instrPromise = getInstrumentedModuleFromStringC(tempFilename, sourceCode, actualFilepath);
 
   var testerPromise = instrPromise.then(function (mod) {
-
     return _promise2.default.resolve(tester(mod));
   });
 
   var slicePromise = instrPromise.then(function (mod) {
-
-    console.log('slice');
+    //console.log(`slice`)
     //console.log(mod)
     var coverageData = mod[coverageVariable][tempFilename];
-    console.log(coverageData);
-    console.log(coverageData.statementMap);
-    console.log(coverageData.s);
+    //console.log(coverageData);
+    //console.log(coverageData.statementMap);
+    //console.log(coverageData.s);
     var slicedCode = (0, _.sliceCodeC)(sourceCode, coverageData);
     var filteredCoverage = (0, _transformCoverage.filterToRunStatementsFunctionsAndBranchesC)(coverageData);
 
     //return {slicedCode, filteredCoverage};
 
-    console.log(slicedCode);
+    //console.log(slicedCode);
 
     return _promise2.default.resolve({
-
       slicedCode: slicedCode,
       filteredCoverage: filteredCoverage
     });
@@ -331,13 +322,12 @@ function getSliceAndInfoC(sourceCode, tester, actualFilepath) {
 
   //console.log(slicePromise)
   var filteredCovPromise = slicePromise.then(function (res) {
-
-    console.log('filtered cov');
-    console.log(res);
+    //console.log(`filtered cov`)
+    //console.log(res);
     var slicedCode = res.slicedCode;
     //return slicedCoverageIs100C(tempFilename, slicedCode, tester, actualFilepath);
 
-    _promise2.default.resolve(slicedCoverageIs100C(tempFilename, slicedCode, tester, actualFilepath));
+    return _promise2.default.resolve(slicedCoverageIs100C(tempFilename, slicedCode, tester, actualFilepath));
 
     //const {is100: isSlicedCoverage100, slicedResult} = slicedCoverageIs100C(tempFilename, slicedCode, tester, actualFilepath);
   });
@@ -350,13 +340,11 @@ function getSliceAndInfoC(sourceCode, tester, actualFilepath) {
   //filteredCoverage: slicePromise
 
   return _promise2.default.all([instrPromise, testerPromise, slicePromise, filteredCovPromise]).then(function (promiseResArr) {
-
-    console.log('promise res arr');
-    console.log(promiseResArr);
+    //console.log(`promise res arr`)
+    //console.log(promiseResArr)
 
     //promiseArr: any[4]
-    _promise2.default.resolve({
-
+    return _promise2.default.resolve({
       mod: promiseResArr[0],
       originalResult: promiseResArr[1],
       slicedCode: promiseResArr[2].slicedCode,
@@ -367,20 +355,19 @@ function getSliceAndInfoC(sourceCode, tester, actualFilepath) {
   });
 
   // console.log('slicedCode', slicedCode)
-
 }
 
 function runAllCombosTests(_ref5) {
   var filename = _ref5.filename,
       methods = _ref5.methods;
 
-
   /**
    * [{
    *    methodName: String,
    *    possibleArguments: [[any*]*]
-   * }] 
-  */
+   * }]
+   */
+
   methods.forEach(function (_ref6) {
     var methodName = _ref6.methodName,
         useDefaultExport = _ref6.useDefaultExport,
@@ -388,20 +375,37 @@ function runAllCombosTests(_ref5) {
         explicitArgs = _ref6.explicitArgs;
 
     if (explicitArgs) {
-
       console.log('dead code');
+
+      var test = global.test;
+      if (!test) {
+        test = function test(title, fn) {
+          return fn();
+        };
+      }
 
       explicitArgs.forEach(function (args) {
         var title = methodName + '(' + args.map(function (a) {
           return (0, _stringify2.default)(a);
         }).join(', ') + ')';
         test(title, snapSlice(filename, function (mod) {
+          console.log(mod);
+          //console.log(useDefaultExport);
+          //console.log(methodName);
+
           var method = useDefaultExport ? mod : mod[methodName];
+
+          (0, _keys2.default)(mod[coverageVariable]).forEach(function (propKey) {
+            var propVal = mod[coverageVariable][propKey];
+            console.log(propVal.statementMap);
+            console.log(propVal.s);
+            console.log('\n');
+          });
+
           return method.apply(undefined, (0, _toConsumableArray3.default)(args));
         }));
       });
     } else {
-
       console.log('explicitArgs undefined');
 
       //[[false], [true]]: [[false]], [[true]], [[false], [true]]
@@ -413,11 +417,15 @@ function runAllCombosTests(_ref5) {
       // generate the message for the test title
 
       //[[false]], [[true]], [[false], [true]]
-      var testTitle = comboOfArgs.map(function (args) {
-        return methodName + '(' + args.map(function (a) {
-          return (0, _stringify2.default)(a);
-        }).join(', ') + ')';
-      }).join(' && ');
+      /*const testTitle = comboOfArgs
+      .map(args => {
+        return `${methodName}(${args
+          .map(a => JSON.stringify(a))
+          .join(', ')})`
+      })
+      .join(' && ')*/
+
+      var testTitle = '';
 
       // this is the call to Jest's `test` function
       var test = global.test;
@@ -429,53 +437,52 @@ function runAllCombosTests(_ref5) {
       test(testTitle, snapSlice(filename, function (mod) {
         var method = useDefaultExport ? mod.default || mod : mod[methodName];
 
+        console.log(useDefaultExport);
+        console.log(mod);
         console.log(method);
         console.log(comboOfArgs);
-        //console.log(mod);
 
         //coverageVariable is incremented with slice results
         //from method executions with different arguments
         //(print only the last property)
-        console.log(mod[coverageVariable]);
-        /*Object.keys(mod[coverageVariable]).forEach(propKey => {
-           let propVal = mod[coverageVariable][propKey];
+        //console.log(mod[coverageVariable]);
+        (0, _keys2.default)(mod[coverageVariable]).forEach(function (propKey) {
+          var propVal = mod[coverageVariable][propKey];
           console.log(propVal.statementMap);
           console.log(propVal.s);
-          console.log(`\n`);
-        });*/
+          console.log('\n');
+        });
 
-        var propKeys = (0, _keys2.default)(mod[coverageVariable]);
+        //let propKeys = Object.keys(mod[coverageVariable]);
 
         //path to intermediate file
-        var lastPropKey = propKeys[propKeys.length - 1];
-        var lastProp = mod[coverageVariable][lastPropKey];
-        console.log('lastPropKey: ' + lastPropKey);
-        console.log(lastProp.statementMap);
-        console.log(lastProp.s);
+        //let lastPropKey = propKeys[propKeys.length-1];
+        //let lastProp = mod[coverageVariable][lastPropKey];
+        //console.log(`lastPropKey: ${lastPropKey}`)
+        //console.log(lastProp.statementMap);
+        //console.log(lastProp.s);
         console.log('\n\n');
+
+        return method();
 
         /*
         console.log(
-          useDefaultExport,
-          methodName,
-          Object.keys(mod),
-          typeof method,
+        useDefaultExport,
+        methodName,
+        Object.keys(mod),
+        typeof method,
         )
         /* */
-        return comboOfArgs.map(function (args) {
-          return method.apply(undefined, (0, _toConsumableArray3.default)(args));
-        });
+        //return comboOfArgs.map(args => method(...args))
       }));
     }
   });
 }
 
 function slicedCoverageIs100C(filename, slicedCode, tester, actualFilepath) {
-
   var instrPromise = getInstrumentedModuleFromStringC(filename, slicedCode, actualFilepath);
 
   var testerPromise = instrPromise.then(function (mod) {
-
     return tester(mod);
   });
 
@@ -488,22 +495,19 @@ function slicedCoverageIs100C(filename, slicedCode, tester, actualFilepath) {
   /* */
 
   var is100Promise = instrPromise.then(function (mod) {
-
     return coverageIs100Percent(mod[coverageVariable]);
   });
 
   return _promise2.default.all([is100Promise, testerPromise]).then(function (promiseResArr) {
-
     //is100: is100Promise
     //slicedResult: testerPromise
     return {
-
       is100: promiseResArr[0],
       slicedResult: promiseResArr[1]
     };
   });
 
-  //const is100 = 
+  //const is100 =
   //return {slicedResult, is100}
 
   function coverageIs100Percent(coverageData) {
@@ -551,10 +555,10 @@ function getInstrumentedModuleFromString(filename, sourceCode, actualFilepath) {
  * @param{String} sourceCode the code to be instrumented
  * @param{String} actualFilepath the path to the module with the code to be instrumented
  * @returns{Object} the module object of the instrumented module
-*/
-function getInstrumentedModuleFromStringC(filename, sourceCode, actualFilepath) {
+ */
 
-  console.log('instr');
+function getInstrumentedModuleFromStringC(filename, sourceCode, actualFilepath) {
+  //console.log(`instr`)
 
   // for the original source, we don't want to ignore anything
   // but there are some cases where we have to create
@@ -563,7 +567,6 @@ function getInstrumentedModuleFromStringC(filename, sourceCode, actualFilepath) 
   // So we add an obnoxiously long comment
   // and replace it here.
   return new _promise2.default(function (resolve, reject) {
-
     var sourceCodeWithoutIstanbulPragma = sourceCode.replace(/istanbul/g, 'ignore-istanbul-ignore').replace(/slice-js-coverage-ignore/g, 'istanbul');
 
     //instrument code
@@ -578,12 +581,16 @@ function getInstrumentedModuleFromStringC(filename, sourceCode, actualFilepath) 
     }),
         code = _babel$transform2.code;
 
-    console.log('loading instr code');
+    //console.log(`loading instr code`)
 
-    //load (execute) the instrumented module code and 
+    //load (execute) the instrumented module code and
     //resolve promise with the instrumented module's module object
     // process.stdout.write('\n\ninstrumentedCode\n\n' + code)
-    resolve(requireFromStringC(code, actualFilepath || filename));
+
+
+    resolve(requireFromString(code, actualFilepath || filename));
+
+    //resolve(requireFromStringC(code, actualFilepath || filename));
 
     //return requireFromStringC(code, actualFilepath || filename);
   });
@@ -597,6 +604,14 @@ function requireFromString(code, filepath) {
   m.filename = filepath;
   m.paths = _module2.default._nodeModulePaths(_path2.default.dirname(filepath));
   m._compile(code, filepath);
+
+  //console.log(m);
+
+  //always run the function, in order to obtain a slice
+  //wrap the analyzed code to a function, in order not to be executed during module loading
+  var func = m.exports.default;
+  func();
+
   return m.exports;
 }
 
@@ -604,7 +619,6 @@ function requireFromString(code, filepath) {
  * copied and modified from require-from-string
  */
 function requireFromStringC(code, filepath) {
-
   //console.log(`importing mod: ${filepath}`)
   //return import(filepath);
 
@@ -615,7 +629,6 @@ function requireFromStringC(code, filepath) {
   console.log('Wrote ' + instrModuleAbsPath);
 
   return new _promise2.default(function (resolve, reject) {
-
     console.log('loading prom');
 
     //resolve(eval(code));
@@ -643,7 +656,6 @@ function requireFromStringC(code, filepath) {
 }
 
 function requireFromStringCUPD(code, filepath) {
-
   console.log('loading prom');
 
   var Mocha = require('mocha');
@@ -655,9 +667,7 @@ function requireFromStringCUPD(code, filepath) {
   mocha.addFile(filepath);
 
   return new _promise2.default(function (resolve, reject) {
-
     return mocha.run().on('end', function () {
-
       console.log('All done');
 
       resolve(requireFromStringC(code, filepath));
