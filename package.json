@@ -11,7 +11,7 @@
     "test-async": "babel-node --require ./node_modules/mocha/bin/mocha ./test/fixtures/module.slicerE.js",
     "prod-async": "babel-node --require ./node_modules/mocha/bin/mocha ./test/fixtures/module.slicerG.js",
     "prod-async-2": "babel-node ./test/fixtures/module.slicerG.js",
-    "prod-async-param": "babel-node ./test/fixtures/module.slicerI.js",
+    "prod-async-param": "babel-node ./dist/module.slicerI.js",
     "slicerH": "node ./test/fixtures/module.slicerΗ.js -- /home/katerina/visualStudioGit/slice-js/src/slice-code/test/fixtures/planck-test-example.js",
     "slicerJ": "node ./test/fixtures/module.slicerJ.js -- /home/katerina/visualStudioGit/slice-js/src/slice-code/test/fixtures/planck-test-example.js",
     "slicerTest": "node ./test/fixtures/slicerTest.js",

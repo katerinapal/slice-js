@@ -12,7 +12,6 @@ var _require = require('child_process'),
     execSync = _require.execSync;
 
 function f(inputFile, testerVar) {
-
   var slice = execSync('npm run --silent prod-async-param -- ' + inputFile + ' ' + testerVar);
   return slice.toString();
 }
