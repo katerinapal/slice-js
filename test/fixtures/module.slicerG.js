@@ -1,4 +1,4 @@
-import {sliceTestD} from '../../src'
+import sliceTestD from '../../src'
 
 //const path = require('path');
 
@@ -7,8 +7,15 @@ if (global.test) {
   test('works', () => {})
 }
 
+//let entryfileAbsPath = 
+//'/home/katerina/visualStudioGit/evaluationProjects/planck.js/test/planck-test-example.js';
+
+//normalized paths to resolve module dependencies
 let entryfileAbsPath = 
-'/home/katerina/visualStudioGit/evaluationProjects/planck.js/test/planck-test-example.js';
+'/home/katerina/visualStudioGit/slice-js/src/slice-code/test/fixtures/planck-test-example.js';
+
+//console.log(`cmd args`);
+//console.log(process.argv)
 
 sliceTestD(require.resolve(entryfileAbsPath), ({tree}) => {
 
@@ -19,8 +26,11 @@ sliceTestD(require.resolve(entryfileAbsPath), ({tree}) => {
   //return f();
   return tree;
 
+  //return a;
+
 }).then(res => {
 
+  console.log(`res`)
   console.log(res);
 
   return Promise.resolve(res);

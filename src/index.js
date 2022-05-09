@@ -1,3 +1,8 @@
+/**
+ * Deprecated: runs with babel-node,
+ * cannot be executed in other runtimes
+ */
+
 import fs from 'fs'
 
 //backwards compatibility with ES6
@@ -20,7 +25,9 @@ function sliceTest(filename, tester) {
       //console.log(res);
       const {slicedCode} = res
       //console.log(slicedCode)
+
       resolve(slicedCode)
+      //return resolve(slicedCode)
     })
   })
 }

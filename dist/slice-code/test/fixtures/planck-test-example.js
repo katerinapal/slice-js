@@ -9,13 +9,13 @@ Object.defineProperty(exports, "__esModule", {
  * Added to keep analysis fixture code.
 */
 
-var expect = require("./testutil/expect.js");
+var expect = require("/home/katerina/visualStudioGit/evaluationProjects/planck.js/test/testutil/expect.js");
 var sinon = require('sinon');
 //var sinon = require('../node_modules/sinon');
 
-var Vec2 = require("../lib/common/Vec2.js");
-var AABB = require("../lib/collision/AABB.js");
-var DynamicTree = require("../lib/collision/DynamicTree.js");
+var Vec2 = require("/home/katerina/visualStudioGit/evaluationProjects/planck.js/lib/common/Vec2.js");
+var AABB = require("/home/katerina/visualStudioGit/evaluationProjects/planck.js/lib/collision/AABB.js");
+var DynamicTree = require("/home/katerina/visualStudioGit/evaluationProjects/planck.js/lib/collision/DynamicTree.js");
 
 /**
  * Slicing can't be applied in the initial test code  
@@ -116,72 +116,133 @@ var DynamicTree = require("../lib/collision/DynamicTree.js");
  * Maybe I shouldn't care about test execution at this phase.
 */
 
-function f() {
+/*function f() {
 
+    var tree = new DynamicTree();
+    var tree2 = new DynamicTree();
+
+    var foo2 = tree2.createProxy(AABB(Vec2(0, 0), Vec2(1, 1)), 'foo2');
+  
+    var foo = tree.createProxy(AABB(Vec2(0, 0), Vec2(1, 1)), 'foo');
+
+    var foo2 = 5;
+    var foo3 = foo2;
+    foo3++;
+    //console.log(foo3);
+
+    var bar2 = tree2.createProxy(AABB(Vec2(1, 1), Vec2(2, 2)), 'bar2');
+    var baz2 = tree2.createProxy(AABB(Vec2(2, 2), Vec2(3, 3)), 'baz2');
+
+    var bar = tree.createProxy(AABB(Vec2(1, 1), Vec2(2, 2)), 'bar');
+    var baz = tree.createProxy(AABB(Vec2(2, 2), Vec2(3, 3)), 'baz');
+
+    expect(tree.getHeight()).be(2);
+  
+    expect(tree.getUserData(foo)).be('foo');
+    expect(tree.getUserData(bar)).be('bar');
+    expect(tree.getUserData(baz)).be('baz');
+  
+    expect(tree.getFatAABB(foo).upperBound.x).be.above(1);
+    expect(tree.getFatAABB(foo).upperBound.y).be.above(1);
+    expect(tree.getFatAABB(foo).lowerBound.x).be.below(0);
+    expect(tree.getFatAABB(foo).lowerBound.y).be.below(0);
+  
+    var QueryCallback = sinon.spy();
+    var callback = QueryCallback;
+
+    //return 5;
+  
+    tree.query(AABB(Vec2(1, 1), Vec2(2, 2)), callback);
+    expect(QueryCallback.calledWith(foo)).be(true);
+    expect(QueryCallback.calledWith(bar)).be(true);
+    expect(QueryCallback.calledWith(baz)).be(true);
+  
+    tree.query(AABB(Vec2(0.3, 0.3), Vec2(0.7, 0.7)),callback);
+    expect(QueryCallback.lastCall.calledWith(foo)).be(true);
+  
+    tree.query(AABB(Vec2(1.3, 1.3), Vec2(1.7, 1.7)), callback);
+    expect(QueryCallback.lastCall.calledWith(bar)).be(true);
+  
+    tree.query(AABB(Vec2(2.3, 2.3), Vec2(2.7, 2.7)), callback);
+    expect(QueryCallback.lastCall.calledWith(baz)).be(true);
+  
+    expect(tree.moveProxy(foo, AABB(Vec2(0, 0), Vec2(1, 1)), Vec2(0.01, 0.01))).be(false);
+  
+    expect(tree.moveProxy(baz, AABB(Vec2(3, 3), Vec2(4, 4)), Vec2(0, 0))).be(true);
+  
+    tree.query(AABB(Vec2(3.3, 3.3), Vec2(3.7, 3.7)), callback);
+    expect(QueryCallback.lastCall.calledWith(baz)).be(true);
+  
+    tree.destroyProxy(foo);
+    expect(tree.getHeight()).be(1);
+  
+    tree.destroyProxy(bar);
+    expect(tree.getHeight()).be(0);
+  
+    tree.destroyProxy(baz);
+    expect(tree.getHeight()).be(0);
+  
+    //g();
+  };
+
+function g() {
+
+  console.log(`dummy unused function`);
+}
+  
+export default f;*/
+
+var expObj = function expObj() {
   var tree = new DynamicTree();
 
   var foo = tree.createProxy(AABB(Vec2(0, 0), Vec2(1, 1)), 'foo');
-
-  var foo2 = 5;
-  var foo3 = foo2;
-  console.log(foo3);
-
   var bar = tree.createProxy(AABB(Vec2(1, 1), Vec2(2, 2)), 'bar');
   var baz = tree.createProxy(AABB(Vec2(2, 2), Vec2(3, 3)), 'baz');
 
-  expect(tree.getHeight()).be(2);
+  tree.getHeight();
 
-  expect(tree.getUserData(foo)).be('foo');
-  expect(tree.getUserData(bar)).be('bar');
-  expect(tree.getUserData(baz)).be('baz');
+  tree.getUserData(foo);
+  tree.getUserData(bar);
+  tree.getUserData(baz);
 
-  expect(tree.getFatAABB(foo).upperBound.x).be.above(1);
-  expect(tree.getFatAABB(foo).upperBound.y).be.above(1);
-  expect(tree.getFatAABB(foo).lowerBound.x).be.below(0);
-  expect(tree.getFatAABB(foo).lowerBound.y).be.below(0);
+  tree.getFatAABB(foo).upperBound.x;
+  tree.getFatAABB(foo).upperBound.y;
+  tree.getFatAABB(foo).lowerBound.x;
+  tree.getFatAABB(foo).lowerBound.y;
 
   var QueryCallback = sinon.spy();
   var callback = QueryCallback;
 
-  //return 5;
-
   tree.query(AABB(Vec2(1, 1), Vec2(2, 2)), callback);
-  expect(QueryCallback.calledWith(foo)).be(true);
-  expect(QueryCallback.calledWith(bar)).be(true);
-  expect(QueryCallback.calledWith(baz)).be(true);
+  QueryCallback.calledWith(foo);
+  QueryCallback.calledWith(bar);
+  QueryCallback.calledWith(baz);
 
   tree.query(AABB(Vec2(0.3, 0.3), Vec2(0.7, 0.7)), callback);
-  expect(QueryCallback.lastCall.calledWith(foo)).be(true);
+  QueryCallback.lastCall.calledWith(foo);
 
   tree.query(AABB(Vec2(1.3, 1.3), Vec2(1.7, 1.7)), callback);
-  expect(QueryCallback.lastCall.calledWith(bar)).be(true);
+  QueryCallback.lastCall.calledWith(bar);
 
   tree.query(AABB(Vec2(2.3, 2.3), Vec2(2.7, 2.7)), callback);
-  expect(QueryCallback.lastCall.calledWith(baz)).be(true);
+  QueryCallback.lastCall.calledWith(baz);
 
-  expect(tree.moveProxy(foo, AABB(Vec2(0, 0), Vec2(1, 1)), Vec2(0.01, 0.01))).be(false);
+  tree.moveProxy(foo, AABB(Vec2(0, 0), Vec2(1, 1)), Vec2(0.01, 0.01));
 
-  expect(tree.moveProxy(baz, AABB(Vec2(3, 3), Vec2(4, 4)), Vec2(0, 0))).be(true);
+  tree.moveProxy(baz, AABB(Vec2(3, 3), Vec2(4, 4)), Vec2(0, 0));
 
   tree.query(AABB(Vec2(3.3, 3.3), Vec2(3.7, 3.7)), callback);
-  expect(QueryCallback.lastCall.calledWith(baz)).be(true);
+  QueryCallback.lastCall.calledWith(baz);
 
   tree.destroyProxy(foo);
-  expect(tree.getHeight()).be(1);
+  tree.getHeight();
 
   tree.destroyProxy(bar);
-  expect(tree.getHeight()).be(0);
+  tree.getHeight();
 
   tree.destroyProxy(baz);
-  expect(tree.getHeight()).be(0);
-
-  //g();
+  tree.getHeight();
 };
 
-function g() {
-
-  console.log("dummy unused function");
-}
-
-exports.default = f;
+exports.default = expObj;
 module.exports = exports.default;

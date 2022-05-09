@@ -58,7 +58,10 @@ var _require = require('./slice-code/test/helpers/utils.js'),
     getSliceAndInfo = _require.getSliceAndInfo,
     getSliceAndInfoC = _require.getSliceAndInfoC,
     snapSlice = _require.snapSlice,
-    runAllCombosTests = _require.runAllCombosTests;
+    runAllCombosTests = _require.runAllCombosTests; /**
+                                                     * Deprecated: runs with babel-node, 
+                                                     * cannot be executed in other runtimes 
+                                                    */
 
 exports.default = sliceTest;
 exports.sliceTestDEPR = sliceTestDEPR;
@@ -76,6 +79,7 @@ function sliceTest(filename, tester) {
       //console.log(slicedCode)
 
       resolve(slicedCode);
+      //return resolve(slicedCode)
     });
   });
 }
