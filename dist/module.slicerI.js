@@ -19,11 +19,9 @@ var testerVar = process.argv[process.argv.length - 1];
 //console.log(testerVar);
 
 function f() {
-
   return (0, _2.default)(require.resolve(entryfileAbsPath), function (_ref) {
     var _ref$tree = _ref.tree,
         tree = _ref$tree === undefined ? testerVar : _ref$tree;
-
 
     //return func()
     //return func();
@@ -34,10 +32,8 @@ function f() {
 
     //return a;
   }).then(function (res) {
-
     console.log(res);
   }).catch(function (err) {
-
     console.log('err: ' + err);
   });
 }

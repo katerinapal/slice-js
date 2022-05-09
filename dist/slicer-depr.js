@@ -6,15 +6,13 @@ Object.defineProperty(exports, "__esModule", {
 
 /**
  * Module running slice-js dynamically.
- * Adapted for integration in other systems.
  */
 
 var _require = require('child_process'),
     execSync = _require.execSync;
 
 function f(inputFile, testerVar) {
-
-  var slice = execSync('babel-node ./node_modules/slice-js/dist/module.slicerI.js -- ' + inputFile + ' ' + testerVar);
+  var slice = execSync('npm run --silent prod-async-param -- ' + inputFile + ' ' + testerVar);
   return slice.toString();
 }
 
