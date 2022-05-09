@@ -6,11 +6,15 @@ if (global.test) {
 }
 
 //normalized paths to resolve module dependencies
-let entryfileAbsPath = process.argv[process.argv.length-1];
+let entryfileAbsPath = process.argv[process.argv.length-2];
+let testerVar = process.argv[process.argv.length-1];
+
+//console.log(entryfileAbsPath);
+//console.log(testerVar);
 
 function f() {
 
-  return sliceTestD(require.resolve(entryfileAbsPath), ({tree}) => {
+  return sliceTestD(require.resolve(entryfileAbsPath), ({tree = testerVar}) => {
 
     //return func()
     //return func();

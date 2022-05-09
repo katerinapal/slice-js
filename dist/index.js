@@ -59,9 +59,9 @@ var _require = require('./slice-code/test/helpers/utils.js'),
     getSliceAndInfoC = _require.getSliceAndInfoC,
     snapSlice = _require.snapSlice,
     runAllCombosTests = _require.runAllCombosTests; /**
-                                                     * Deprecated: runs with babel-node, 
-                                                     * cannot be executed in other runtimes 
-                                                    */
+                                                     * Deprecated: runs with babel-node,
+                                                     * cannot be executed in other runtimes
+                                                     */
 
 exports.default = sliceTest;
 exports.sliceTestDEPR = sliceTestDEPR;
