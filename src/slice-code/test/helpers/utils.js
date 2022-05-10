@@ -164,7 +164,12 @@ function getSliceAndInfoC(sourceCode, tester, actualFilepath) {
     //console.log(coverageData);
     //console.log(coverageData.statementMap);
     //console.log(coverageData.s);
-    const slicedCode = sliceCodeC(sourceCode, coverageData)
+
+    //const slicedCode = sliceCodeC(sourceCode, coverageData)
+
+    //in case of buggy test code, return an empty slice
+    const slicedCode =
+      mod.err == true ? `` : sliceCodeC(sourceCode, coverageData)
     const filteredCoverage = filterToRunStatementsFunctionsAndBranchesC(
       coverageData,
     )
@@ -484,11 +489,8 @@ function getInstrumentedModuleFromStringC(
     //load (execute) the instrumented module code and
     //resolve promise with the instrumented module's module object
     // process.stdout.write('\n\ninstrumentedCode\n\n' + code)
+
     resolve(requireFromString(code, actualFilepath || filename))
-
-    //resolve(requireFromStringC(code, actualFilepath || filename));
-
-    //return requireFromStringC(code, actualFilepath || filename);
   })
 }
 
@@ -506,9 +508,22 @@ function requireFromString(code, filepath) {
   //always run the function, in order to obtain a slice
   //wrap the analyzed code to a function, in order not to be executed during module loading
   let func = m.exports.default
-  func()
 
-  return m.exports
+  try {
+    func()
+    return m.exports
+  } catch (err) {
+    console.log(`Error in slice generation: the analyzed code contains bugs.`)
+    console.log(err)
+
+    //add a surrogate property to m.exports
+    //(return an empty slice for buggy test code)
+    m.exports.err = true
+    return m.exports
+  }
+
+  //func()
+  //return m.exports
 }
 
 /*
