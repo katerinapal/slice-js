@@ -13,7 +13,6 @@ var _require = require('child_process'),
     execSync = _require.execSync;
 
 function f(inputFile, testerVar) {
-
   var slice = execSync('babel-node ./node_modules/slice-js/dist/module.slicerI.js -- ' + inputFile + ' ' + testerVar);
   return slice.toString();
 }
